@@ -10,12 +10,51 @@ import UIKit
 
 class PageVC: UIPageViewController {
 
+    var currentPage = 0
+    var locationsArray = ["Local City", "Chestnut Hill, MA", "Accra, Ghana", "Sydney, Australia", "Uglich, Russia"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        delegate = self
+        dataSource = self
+        
+        setViewControllers([createDetailVC(forPage: 0)], direction: .forward, animated: false, completion: nil)
     }
     
+    func createDetailVC(forPage page: Int) -> DetalVC {
+        currentPage = min(max(0, page), locationsArray.count - 1)
+        let detailVC = storyboard!.instantiateViewController(withIdentifier: "DetalVC") as! DetalVC
+        
+        
+       detailVC.locationsArray = locationsArray
+       detailVC.currentPage = currentPage
+        
+        return detailVC
+    }
 
     
 }
+
+extension PageVC: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        if let currentViewController = viewController as? DetalVC{
+            if currentViewController.currentPage < locationsArray.count - 1 {
+                return createDetailVC(forPage: (currentViewController.currentPage + 1))
+            }
+        }
+        return nil
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        if let currentViewController = viewController as? DetalVC {
+            if currentViewController.currentPage > 0 {
+                return createDetailVC(forPage: (currentViewController.currentPage - 1))
+            }
+        }
+        return nil
+    }
+    
+    
+    
+}
+
