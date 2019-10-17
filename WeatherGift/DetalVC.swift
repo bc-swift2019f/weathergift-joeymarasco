@@ -23,6 +23,7 @@ class DetalVC: UIViewController {
         super.viewDidLoad()
         
         locationLabel.text = locationsArray[currentPage].name
+        dateLabel.text = locationsArray[currentPage].coordinates
        
     }
     

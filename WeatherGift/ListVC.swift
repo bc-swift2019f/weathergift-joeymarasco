@@ -103,8 +103,13 @@ extension ListVC: UITabBarDelegate, UITableViewDataSource {
         let newIndexPath = IndexPath(row: locationsArray.count, section: 0)
         var newWeatherLocation = WeatherLocation()
         newWeatherLocation.name = place.name!
+        let longitude = place.coordinate.longitude
+        let latitude = place.coordinate.latitude
+        newWeatherLocation.coordinates = "\(latitude),\(longitude)"
+        print(newWeatherLocation.coordinates)
         locationsArray.append(newWeatherLocation)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+        
     }
     
 }
